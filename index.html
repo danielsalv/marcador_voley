@@ -201,15 +201,15 @@ function startContinuousRecognition() {
 		  if (messageContent) {
 			document.getElementById('userInput').value = messageContent;
 			sendMessage();
-			//recognition.stop();
-			//setTimeout(() => recognition.start(), 100);
+			recognition.stop();
+			//setTimeout(() => recognition.start(), 1000);
 			// Silencia el reconocimiento durante un segundo
 			//muteRecognition(4000);
-			noisMuted = false;
-			setTimeout(() => {
-				console.log("Reconocimiento habilitado");
-				noisMuted = true;
-			}, 6000);
+			//noisMuted = false;
+			//setTimeout(() => {
+			//	console.log("Reconocimiento habilitado");
+			//	noisMuted = true;
+			//}, 6000);
 		  }
 		}
 	}
