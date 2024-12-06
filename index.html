@@ -227,6 +227,10 @@ function startVoiceInput() {
     console.log("Reconocimiento de voz finalizado");
   };
 }
+// Iniciar reconocimiento continuo al cargar la página
+window.onload = () => {
+  startContinuousRecognition();
+};
   </script>
 </body>
 </html>
