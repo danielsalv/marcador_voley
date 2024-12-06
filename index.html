@@ -160,7 +160,7 @@ function startContinuousRecognition() {
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'es-ES'; // Configura el idioma a español
   recognition.interimResults = true; // No mostrar resultados intermedios
-  recognition.continuous = true; // Reconocimiento continuo
+  recognition.continuous = false; // Reconocimiento continuo
   //recognition.maxAlternatives = 1; // Solo una interpretación de lo dicho
   
   let noisMuted = true;
@@ -226,7 +226,7 @@ function startContinuousRecognition() {
     const nnof = "fin";
     document.getElementById('userInput').value = nnof;
     console.log("Reconocimiento de voz finalizado");
-    //recognition.start();
+    recognition.start();
   };
 }
 // Iniciar reconocimiento continuo al cargar la página
