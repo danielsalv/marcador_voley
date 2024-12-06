@@ -62,10 +62,6 @@ const messagesHistory = [
   }
 ];
 
-async function sendAPI_Key() {
-  const apiKeyy = document.getElementById('textInput').value;
-}
-
 async function sendMessage() {
   const userInput = document.getElementById('userInput').value;
   if (!userInput.trim()) return;
@@ -163,18 +159,60 @@ function startVoiceInput() {
   }
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'es-ES'; // Configura el idioma a español
-  recognition.interimResults = false; // No mostrar resultados intermedios
-  recognition.maxAlternatives = 1; // Solo una interpretación de lo dicho
+  recognition.interimResults = true; // No mostrar resultados intermedios
+  recognition.continuous = true; // Reconocimiento continuo
+  //recognition.maxAlternatives = 1; // Solo una interpretación de lo dicho
+  
+  let noisMuted = true;
+
+  // Pausa temporal para ignorar resultados
+  function muteRecognition(duration = 4000) {
+	console.log("Reconocimiento silenciado");
+    isMuted = true;
+    setTimeout(() => {
+		console.log("Reconocimiento habilitado");
+		isMuted = false;
+    }, 4000);
+  }
 
   recognition.start();
-  const sof = "Si furula";
-  document.getElementById('userInput').value = sof;
-  const fof = "Hola";
 
   recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    document.getElementById('userInput').value = transcript; // Muestra el texto reconocido en el input
-    sendMessage(); // Envía el mensaje automáticamente
+	if (noisMuted) {
+		console.log("Dentro");
+		let interimTranscript = '';
+		let finalTranscript = '';
+
+		for (let i = event.resultIndex; i < event.results.length; i++) {
+		  const transcript = event.results[i][0].transcript;
+		  if (event.results[i].isFinal) {
+			finalTranscript += transcript;
+		  } else {
+			interimTranscript += transcript;
+		  }
+		}
+
+		document.getElementById('userInput').value = interimTranscript;
+
+		if (finalTranscript.toLowerCase().includes("marcador")) {
+		  const messageStart = finalTranscript.toLowerCase().indexOf("marcador") + 9;
+		  const messageContent = finalTranscript.substring(messageStart).trim();
+
+		  if (messageContent) {
+			document.getElementById('userInput').value = messageContent;
+			sendMessage();
+			//recognition.stop();
+			//setTimeout(() => recognition.start(), 100);
+			// Silencia el reconocimiento durante un segundo
+			//muteRecognition(4000);
+			noisMuted = false;
+			setTimeout(() => {
+				console.log("Reconocimiento habilitado");
+				noisMuted = true;
+			}, 6000);
+		  }
+		}
+	}
   };
 
   recognition.onerror = (event) => {
