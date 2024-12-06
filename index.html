@@ -152,7 +152,7 @@ function speak(text) {
 }
 
 // Función para reconocimiento de voz
-function startVoiceInput() {
+function startContinuousRecognition() {
   if (!('webkitSpeechRecognition' in window)) {
     alert("Tu navegador no soporta reconocimiento de voz");
     return;
