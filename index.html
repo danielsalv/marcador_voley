@@ -223,8 +223,8 @@ function startContinuousRecognition() {
   };
 
   recognition.onend = () => {
-    const nnof = "fin";
-    document.getElementById('userInput').value = nnof;
+    //const nnof = "fin";
+    //document.getElementById('userInput').value = nnof;
     console.log("Reconocimiento de voz finalizado");
     recognition.start();
   };
