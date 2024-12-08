@@ -40,9 +40,107 @@
         border-radius: 5px;
         border: 1px solid #ccc;
     }
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #222;
+    }
+    .scoreboard {
+      text-align: center;
+      background: #222;
+      color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 325px;
+    }
+    .teams {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+    }
+    .team {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .team.winning {
+      background-color: #28a745;
+      color: #fff;
+    }
+    .team-name {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+    .team-score {
+      font-size: 5rem;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 5px 50px;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .match-buttons {
+      margin-bottom: 20px;
+    }
+    .match-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .match-button.active {
+      background-color: #28a745;
+      color: white;
+      border-color: #28a745;
+    }
+    .match-button:not(.active):hover {
+      background-color: #d1d1d1;
+    }
   </style>
 </head>
 <body>
+  <div class="title">Vóley Playa</div>
+  <div class="match-buttons">
+    <button class="match-button active" id="button15" onclick="updateMatchButtonStyles(15)">Partido a 15 puntos</button>
+    <button class="match-button" id="button21" onclick="updateMatchButtonStyles(21)">Partido a 21 puntos</button>
+  </div>
+  <div class="scoreboard">
+    <div class="teams">
+      <div id="team1" class="team">
+        <!--<div class="team-name">Equipo 1</div>-->
+        <div class="team-score" id="score1">0</div>
+      </div>
+      <div id="team2" class="team">
+        <!--<div class="team-name">Equipo 2</div>-->
+        <div class="team-score" id="score2">0</div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="button" onclick="incrementScore('team1')">+1</button>
+      <button class="button" onclick="incrementScore('team2')">+1</button>
+    </div>
+  </div>
   <div id="inputContainer">
     <input type="text" id="textInput" placeholder="Escribe tu API Key de OpenAI aquí...">
   </div>
@@ -54,6 +152,47 @@
   </div>
 
   <script>
+
+    function updateMatchButtonStyles(selectedPoints) {
+      const button15 = document.getElementById('button15');
+      const button21 = document.getElementById('button21');
+
+      if (selectedPoints === 15) {
+        button15.classList.add('active');
+        button21.classList.remove('active');
+      } else if (selectedPoints === 21) {
+        button21.classList.add('active');
+        button15.classList.remove('active');
+      }
+    }
+
+    function incrementScore(team) {
+      const scoreElement = document.getElementById(`score${team === 'team1' ? 1 : 2}`);
+      let score = parseInt(scoreElement.innerText);
+      score += 1;
+      scoreElement.innerText = score;
+
+      updateWinningTeam();
+    }
+
+    function updateWinningTeam() {
+      const score1 = parseInt(document.getElementById('score1').innerText);
+      const score2 = parseInt(document.getElementById('score2').innerText);
+
+      const team1 = document.getElementById('team1');
+      const team2 = document.getElementById('team2');
+
+      if (score1 > score2) {
+        team1.classList.add('winning');
+        team2.classList.remove('winning');
+      } else if (score2 > score1) {
+        team2.classList.add('winning');
+        team1.classList.remove('winning');
+      } else {
+        team1.classList.remove('winning');
+        team2.classList.remove('winning');
+      }
+    }
 
 const messagesHistory = [
   {
