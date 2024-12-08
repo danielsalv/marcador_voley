@@ -143,34 +143,6 @@
       }
     }
 
-    function incrementScore(team) {
-      const scoreElement = document.getElementById(`score${team === 'team1' ? 1 : 2}`);
-      let score = parseInt(scoreElement.innerText);
-      score += 1;
-      scoreElement.innerText = score;
-
-      updateWinningTeam();
-    }
-
-    function updateWinningTeam() {
-      const score1 = parseInt(document.getElementById('score1').innerText);
-      const score2 = parseInt(document.getElementById('score2').innerText);
-
-      const team1 = document.getElementById('team1');
-      const team2 = document.getElementById('team2');
-
-      if (score1 > score2) {
-        team1.classList.add('winning');
-        team2.classList.remove('winning');
-      } else if (score2 > score1) {
-        team2.classList.add('winning');
-        team1.classList.remove('winning');
-      } else {
-        team1.classList.remove('winning');
-        team2.classList.remove('winning');
-      }
-    }
-
 const messagesHistory = [
   {
     role: "system",
@@ -250,23 +222,32 @@ function processResponse(response) {
     document.getElementById('score1').innerText = A;
     document.getElementById('score2').innerText = B;
 
-		const team1 = document.getElementById('team1');
+    const team1 = document.getElementById('team1');
     const team2 = document.getElementById('team2');
 
-		if (A > B) {
-			team1.classList.add('winning');
-			team2.classList.remove('winning');
-		} else if (B > A) {
-			team2.classList.add('winning');
-			team1.classList.remove('winning');
-		} else {
-			team1.classList.remove('winning');
-			team2.classList.remove('winning');
-		}
+if (A > B) {
+	team1.classList.add('winning');
+	team2.classList.remove('winning');
+} else if (B > A) {
+	team2.classList.add('winning');
+	team1.classList.remove('winning');
+} else {
+	team1.classList.remove('winning');
+	team2.classList.remove('winning');
+}
+    let fin=15; let cambio=5;
+    const button = document.getElementById('button15'); 
+    if (button.classList.contains('active')) {
+	fin = 15;
+	cambio = 5;
+    } else {
+	fin = 21;
+	cambio = 7;
+    }
 		
-    if (A === 15) return "Fin del partido, gana el equipo A";
-    if (B === 15) return "Fin del partido, gana el equipo B";
-    if ((A + B) % 5 === 0 && (A !== 0 || B !== 0)) {
+    if (A === fin) return "Fin del partido, gana el equipo A";
+    if (B === fin) return "Fin del partido, gana el equipo B";
+    if ((A + B) % cambio === 0 && (A !== 0 || B !== 0)) {
       response += " Cambio de campo.";
     }
   }
