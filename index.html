@@ -245,8 +245,10 @@ if (A > B) {
 	cambio = 7;
     }
 		
-    if (A === fin) return "Fin del partido, gana el equipo A";
-    if (B === fin) return "Fin del partido, gana el equipo B";
+    if (A === 15 || B === 15) {
+      response = "Fin del partido, " + response;
+      response = response.replace("ganando", "gana el");
+    }
     if ((A + B) % cambio === 0 && (A !== 0 || B !== 0)) {
       response += " Cambio de campo.";
     }
