@@ -179,7 +179,7 @@ function startContinuousRecognition() {
   recognition.onerror = (event) => {
     document.getElementById('userInput').value = event.error;
     console.error("Error en el reconocimiento de voz:", event.error);
-    recognition.start();
+    //recognition.start();
   };
 
   recognition.onend = () => {
