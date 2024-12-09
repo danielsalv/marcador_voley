@@ -278,58 +278,34 @@ function startContinuousRecognition() {
   recognition.interimResults = true; // No mostrar resultados intermedios
   recognition.continuous = false; // Reconocimiento continuo
   //recognition.maxAlternatives = 1; // Solo una interpretación de lo dicho
-  
-  //let noisMuted = true;
-
-  // Pausa temporal para ignorar resultados
-  function muteRecognition(duration = 4000) {
-	console.log("Reconocimiento silenciado");
-    isMuted = true;
-    setTimeout(() => {
-		console.log("Reconocimiento habilitado");
-		isMuted = false;
-    }, 4000);
-  }
 
   recognition.start();
 
   recognition.onresult = (event) => {
-	//if (noisMuted) {
-		console.log("Dentro");
-		let interimTranscript = '';
-		let finalTranscript = '';
-
-		for (let i = event.resultIndex; i < event.results.length; i++) {
-		  const transcript = event.results[i][0].transcript;
-		  if (event.results[i].isFinal) {
-			finalTranscript += transcript;
-		  } else {
-			interimTranscript += transcript;
-		  }
-		}
-
-		document.getElementById('userInput').value = interimTranscript;
-
-		if (finalTranscript.toLowerCase().includes("marcador")) {
-		  const messageStart = finalTranscript.toLowerCase().indexOf("marcador") + 9;
-		  const messageContent = finalTranscript.substring(messageStart).trim();
-
-		  if (messageContent) {
-			document.getElementById('userInput').value = messageContent;
-			sendMessage();
-			//recognition.stop();
-			//setTimeout(() => recognition.start(), 1000);
-			// Silencia el reconocimiento durante un segundo
-			//muteRecognition(4000);
-			//noisMuted = false;
-			//setTimeout(() => {
-			//	console.log("Reconocimiento habilitado");
-				// recognition.stop();
-			//	noisMuted = true;
-			//}, 1000);
-		  }
-		}
-	//}
+	console.log("Dentro");
+	let interimTranscript = '';
+	let finalTranscript = '';
+	
+	for (let i = event.resultIndex; i < event.results.length; i++) {
+	  const transcript = event.results[i][0].transcript;
+	  if (event.results[i].isFinal) {
+		finalTranscript += transcript;
+	  } else {
+		interimTranscript += transcript;
+	  }
+	}
+	
+	document.getElementById('userInput').value = interimTranscript;
+	
+	if (finalTranscript.toLowerCase().includes("marcador")) {
+	  const messageStart = finalTranscript.toLowerCase().indexOf("marcador") + 9;
+	  const messageContent = finalTranscript.substring(messageStart).trim();
+	
+	  if (messageContent) {
+		document.getElementById('userInput').value = messageContent;
+		sendMessage();
+	  }
+	}
   };
 
   recognition.onerror = (event) => {
@@ -340,8 +316,6 @@ function startContinuousRecognition() {
   };
 
   recognition.onend = () => {
-    //const nnof = "fin";
-    //document.getElementById('userInput').value = nnof;
     console.log("Reconocimiento de voz finalizado");
     recognition.start();
   };
