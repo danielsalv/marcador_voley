@@ -279,7 +279,7 @@ function startContinuousRecognition() {
   recognition.continuous = false; // Reconocimiento continuo
   //recognition.maxAlternatives = 1; // Solo una interpretación de lo dicho
   
-  let noisMuted = true;
+  //let noisMuted = true;
 
   // Pausa temporal para ignorar resultados
   function muteRecognition(duration = 4000) {
@@ -294,7 +294,7 @@ function startContinuousRecognition() {
   recognition.start();
 
   recognition.onresult = (event) => {
-	if (noisMuted) {
+	//if (noisMuted) {
 		console.log("Dentro");
 		let interimTranscript = '';
 		let finalTranscript = '';
@@ -321,15 +321,15 @@ function startContinuousRecognition() {
 			//setTimeout(() => recognition.start(), 1000);
 			// Silencia el reconocimiento durante un segundo
 			//muteRecognition(4000);
-			noisMuted = false;
-			setTimeout(() => {
-				console.log("Reconocimiento habilitado");
+			//noisMuted = false;
+			//setTimeout(() => {
+			//	console.log("Reconocimiento habilitado");
 				// recognition.stop();
-				noisMuted = true;
-			}, 1000);
+			//	noisMuted = true;
+			//}, 1000);
 		  }
 		}
-	}
+	//}
   };
 
   recognition.onerror = (event) => {
