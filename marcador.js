@@ -117,8 +117,7 @@ if (A > B) {
     if (A === 15 || B === 15) {
       response = "Fin del partido. " + response;
       response = response.replace("ganando", "gana el");
-    }
-    if ((A + B) % cambio === 0 && (A !== 0 || B !== 0)) {
+    } else if ((A + B) % cambio === 0 && (A !== 0 || B !== 0)) {
       response += " Cambio de campo.";
     }
   }
