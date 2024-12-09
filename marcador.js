@@ -1,4 +1,5 @@
-function updateMatchButtonStyles(selectedPoints) {
+
+    function updateMatchButtonStyles(selectedPoints) {
       const button15 = document.getElementById('button15');
       const button21 = document.getElementById('button21');
 
@@ -11,44 +12,12 @@ function updateMatchButtonStyles(selectedPoints) {
       }
     }
 
-    function incrementScore(team) {
-      const scoreElement = document.getElementById(`score${team === 'team1' ? 1 : 2}`);
-      let score = parseInt(scoreElement.innerText);
-      score += 1;
-      scoreElement.innerText = score;
-
-      updateWinningTeam();
-    }
-
-    function updateWinningTeam() {
-      const score1 = parseInt(document.getElementById('score1').innerText);
-      const score2 = parseInt(document.getElementById('score2').innerText);
-
-      const team1 = document.getElementById('team1');
-      const team2 = document.getElementById('team2');
-
-      if (score1 > score2) {
-        team1.classList.add('winning');
-        team2.classList.remove('winning');
-      } else if (score2 > score1) {
-        team2.classList.add('winning');
-        team1.classList.remove('winning');
-      } else {
-        team1.classList.remove('winning');
-        team2.classList.remove('winning');
-      }
-    }
-
 const messagesHistory = [
   {
     role: "system",
-    content: "Eres un asistente que lleva el marcador de un partido de voley playa. Ejemplos: 'Marcador 1 0 ganando equipo A.', 'Marcador 0 0 empate.', solamente puedes decirlo así"
+    content: "Eres un asistente que lleva el marcador de un partido de voley playa. Ejemplos: 'Puntuación 1 0 ganando equipo A.', 'Puntuación 0 0 empate.', solamente puedes decirlo así"
   }
 ];
-
-async function sendAPI_Key() {
-  const apiKeyy = document.getElementById('textInput').value;
-}
 
 async function sendMessage() {
   const userInput = document.getElementById('userInput').value;
@@ -119,11 +88,37 @@ function processResponse(response) {
       B = parseInt(parts[1], 10);
     }
 
+    document.getElementById('score1').innerText = A;
+    document.getElementById('score2').innerText = B;
+
+    const team1 = document.getElementById('team1');
+    const team2 = document.getElementById('team2');
+
+if (A > B) {
+	team1.classList.add('winning');
+	team2.classList.remove('winning');
+} else if (B > A) {
+	team2.classList.add('winning');
+	team1.classList.remove('winning');
+} else {
+	team1.classList.remove('winning');
+	team2.classList.remove('winning');
+}
+    let fin=15; let cambio=5;
+    const button = document.getElementById('button15'); 
+    if (button.classList.contains('active')) {
+	fin = 15;
+	cambio = 5;
+    } else {
+	fin = 21;
+	cambio = 7;
+    }
+		
     if (A === 15 || B === 15) {
-      response = "Fin del partido, " + response;
+      response = "Fin del partido. " + response;
       response = response.replace("ganando", "gana el");
     }
-    if ((A + B) % 5 === 0 && (A !== 0 || B !== 0)) {
+    if ((A + B) % cambio === 0 && (A !== 0 || B !== 0)) {
       response += " Cambio de campo.";
     }
   }
@@ -142,36 +137,59 @@ function speak(text) {
 }
 
 // Función para reconocimiento de voz
-function startVoiceInput() {
+function startContinuousRecognition() {
   if (!('webkitSpeechRecognition' in window)) {
     alert("Tu navegador no soporta reconocimiento de voz");
     return;
   }
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'es-ES'; // Configura el idioma a español
-  recognition.interimResults = false; // No mostrar resultados intermedios
-  recognition.maxAlternatives = 1; // Solo una interpretación de lo dicho
+  recognition.interimResults = true; // No mostrar resultados intermedios
+  recognition.continuous = false; // Reconocimiento continuo
+  //recognition.maxAlternatives = 1; // Solo una interpretación de lo dicho
 
   recognition.start();
-  const sof = "Si furula";
-  document.getElementById('userInput').value = sof;
-  const fof = "Hola";
 
   recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    document.getElementById('userInput').value = transcript; // Muestra el texto reconocido en el input
-    sendMessage(); // Envía el mensaje automáticamente
+	console.log("Dentro");
+	let interimTranscript = '';
+	let finalTranscript = '';
+	
+	for (let i = event.resultIndex; i < event.results.length; i++) {
+	  const transcript = event.results[i][0].transcript;
+	  if (event.results[i].isFinal) {
+		finalTranscript += transcript;
+	  } else {
+		interimTranscript += transcript;
+	  }
+	}
+	
+	document.getElementById('userInput').value = interimTranscript;
+	
+	if (finalTranscript.toLowerCase().includes("marcador")) {
+	  const messageStart = finalTranscript.toLowerCase().indexOf("marcador") + 9;
+	  const messageContent = finalTranscript.substring(messageStart).trim();
+	
+	  if (messageContent) {
+		document.getElementById('userInput').value = messageContent;
+		sendMessage();
+	  }
+	}
   };
 
   recognition.onerror = (event) => {
     const nof = "No furula";
     document.getElementById('userInput').value = event.error;
     console.error("Error en el reconocimiento de voz:", event.error);
+    //recognition.start();
   };
 
   recognition.onend = () => {
-    const nnof = "fin";
-    document.getElementById('userInput').value = nnof;
     console.log("Reconocimiento de voz finalizado");
+    recognition.start();
   };
 }
+// Iniciar reconocimiento continuo al cargar la página
+window.onload = () => {
+  startContinuousRecognition();
+};
