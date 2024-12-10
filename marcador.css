@@ -46,50 +46,50 @@ body {
   color: #222;
 }
 .scoreboard {
-      text-align: center;
-      background: #222;
-      color: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      width: 90%;
-      max-width: 325px;
+  text-align: center;
+  background: #222;
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 325px;
 }
 .teams {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
 }
 .team {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background-color 0.3s;
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
 }
 .team.winning {
-      background-color: #28a745;
-      color: #fff;
+  background-color: #28a745;
+  color: #fff;
 }
 .team-score {
-      font-size: 5rem;
+  font-size: 5rem;
 }
 .match-buttons {
-      margin-bottom: 20px;
+   margin-bottom: 20px;
 }
 .match-button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 .match-button.active {
-      background-color: #28a745;
-      color: white;
-      border-color: #28a745;
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
 }
 .match-button:not(.active):hover {
-      background-color: #d1d1d1;
+    background-color: #d1d1d1;
 }
