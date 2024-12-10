@@ -1,16 +1,16 @@
 
-    function updateMatchButtonStyles(selectedPoints) {
-      const button15 = document.getElementById('button15');
-      const button21 = document.getElementById('button21');
-
-      if (selectedPoints === 15) {
-        button15.classList.add('active');
-        button21.classList.remove('active');
-      } else if (selectedPoints === 21) {
-        button21.classList.add('active');
-        button15.classList.remove('active');
-      }
-    }
+function updateMatchButtonStyles(selectedPoints) {
+  const button15 = document.getElementById('button15');
+  const button21 = document.getElementById('button21');
+	
+  if (selectedPoints === 15) {
+    button15.classList.add('active');
+    button21.classList.remove('active');
+  } else if (selectedPoints === 21) {
+    button21.classList.add('active');
+    button15.classList.remove('active');
+  }
+}
 
 const messagesHistory = [
   {
@@ -94,24 +94,24 @@ function processResponse(response) {
     const team1 = document.getElementById('team1');
     const team2 = document.getElementById('team2');
 
-if (A > B) {
-	team1.classList.add('winning');
-	team2.classList.remove('winning');
-} else if (B > A) {
-	team2.classList.add('winning');
-	team1.classList.remove('winning');
-} else {
-	team1.classList.remove('winning');
-	team2.classList.remove('winning');
-}
+    if (A > B) {
+      team1.classList.add('winning');
+      team2.classList.remove('winning');
+    } else if (B > A) {
+      team2.classList.add('winning');
+      team1.classList.remove('winning');
+    } else {
+      team1.classList.remove('winning');
+      team2.classList.remove('winning');
+    }
     let fin=15; let cambio=5;
     const button = document.getElementById('button15'); 
     if (button.classList.contains('active')) {
-	fin = 15;
-	cambio = 5;
+      fin = 15;
+      cambio = 5;
     } else {
-	fin = 21;
-	cambio = 7;
+      fin = 21;
+      cambio = 7;
     }
 		
     if (A === 15 || B === 15) {
@@ -150,31 +150,31 @@ function startContinuousRecognition() {
   recognition.start();
 
   recognition.onresult = (event) => {
-	console.log("Dentro");
-	let interimTranscript = '';
-	let finalTranscript = '';
+    console.log("Dentro");
+    let interimTranscript = '';
+    let finalTranscript = '';
 	
-	for (let i = event.resultIndex; i < event.results.length; i++) {
-	  const transcript = event.results[i][0].transcript;
-	  if (event.results[i].isFinal) {
-		finalTranscript += transcript;
-	  } else {
-		interimTranscript += transcript;
-	  }
-	}
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript;
+      } else {
+        interimTranscript += transcript;
+      }
+    }
 	
-	document.getElementById('userInput').value = interimTranscript;
+    document.getElementById('userInput').value = interimTranscript;
 	
-	if (finalTranscript.toLowerCase().includes("marcador")) {
-	  const messageStart = finalTranscript.toLowerCase().indexOf("marcador") + 9;
-	  const messageContent = finalTranscript.substring(messageStart).trim();
-	
-	  if (messageContent) {
-		document.getElementById('userInput').value = messageContent;
-		sendMessage();
-	  }
-	}
-  };
+    if (finalTranscript.toLowerCase().includes("marcador")) {
+      const messageStart = finalTranscript.toLowerCase().indexOf("marcador") + 9;
+      const messageContent = finalTranscript.substring(messageStart).trim();
+
+    if (messageContent) {
+      document.getElementById('userInput').value = messageContent;
+      sendMessage();
+    }
+  }
+};
 
   recognition.onerror = (event) => {
     document.getElementById('userInput').value = event.error;
