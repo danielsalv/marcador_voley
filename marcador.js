@@ -1,4 +1,3 @@
-
 function updateMatchButtonStyles(selectedPoints) {
   const button15 = document.getElementById('button15');
   const button21 = document.getElementById('button21');
@@ -169,12 +168,12 @@ function startContinuousRecognition() {
       const messageStart = finalTranscript.toLowerCase().indexOf("marcador") + 9;
       const messageContent = finalTranscript.substring(messageStart).trim();
 
-    if (messageContent) {
-      document.getElementById('userInput').value = messageContent;
-      sendMessage();
+      if (messageContent) {
+        document.getElementById('userInput').value = messageContent;
+        sendMessage();
+      }
     }
-  }
-};
+  };
 
   recognition.onerror = (event) => {
     document.getElementById('userInput').value = event.error;
